@@ -18,9 +18,14 @@ npm install @borderlesslabs/assign --save
 ```js
 import { assign } from "@borderlesslabs/assign";
 
-assign({ a: 10 }, { b: 10 }); // { a: 10, b: 10 }
+// Merges objects.
+assign({ a: 10 }, { b: 10 }); //=> { a: 10, b: 10 }
 
-assign({ a: { b: true }, { a: { c: false } }); // { a: { b: true, c: false } }
+// Deep merge of objects.
+assign({ a: { b: true }, { a: { c: false } }); //=> { a: { b: true, c: false } }
+
+// Pushes to arrays, overwrites primitives.
+assign({ a: 10, b: [1] }, { a: 20, b: [2, 3] }); //=> { a: 20, b: [1, 2, 3] }
 ```
 
 ## License
