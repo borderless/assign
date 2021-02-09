@@ -63,4 +63,11 @@ describe("assign", () => {
       }
     });
   });
+
+  it("should throw when unsafe path encountered", () => {
+    const payload = JSON.parse(
+      '{"__proto__":{"polluted":"Yes! Its Polluted"}}'
+    );
+    expect(() => assign({}, payload)).toThrow();
+  });
 });
