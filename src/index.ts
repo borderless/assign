@@ -9,6 +9,12 @@ export type DeepPartial<T> = {
     : T[K];
 };
 
+function disallowProtoPath(path: any, key: string) {
+  if (path[key] === Object.prototype) {
+    throw new Error("Unsafe path encountered: " + key);
+  }
+}
+
 /**
  * Simple recursive assign of objects.
  */
@@ -18,7 +24,7 @@ export function assign<T>(target: T, value: DeepPartial<T>) {
   if (Array.isArray(value)) {
     if (Array.isArray(target)) {
       for (const item of value) {
-        target.push(item);
+        (target as Array<string>).push(item);
       }
 
       return target;
@@ -29,6 +35,7 @@ export function assign<T>(target: T, value: DeepPartial<T>) {
 
   if (typeof target === "object" && typeof value === "object") {
     for (const key of Object.keys(value)) {
+      disallowProtoPath(target, key);
       (target as any)[key] = assign((target as any)[key], (value as any)[key]);
     }
 
