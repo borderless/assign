@@ -9,10 +9,8 @@ export type DeepPartial<T> = {
     : T[K];
 };
 
-function disallowProtoPath(path: any, key: string) {
-  if (path[key] === Object.prototype) {
-    throw new Error("Unsafe path encountered: " + key);
-  }
+function isProtoPath(path: any, key: string) {
+  return path[key] === Object.prototype;
 }
 
 /**
@@ -35,7 +33,7 @@ export function assign<T>(target: T, value: DeepPartial<T>) {
 
   if (typeof target === "object" && typeof value === "object") {
     for (const key of Object.keys(value)) {
-      disallowProtoPath(target, key);
+      if (isProtoPath(target, key)) continue;
       (target as any)[key] = assign((target as any)[key], (value as any)[key]);
     }
 
