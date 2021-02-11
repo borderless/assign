@@ -9,6 +9,10 @@ export type DeepPartial<T> = {
     : T[K];
 };
 
+function isProtoPath(path: any, key: string) {
+  return path[key] === Object.prototype;
+}
+
 /**
  * Simple recursive assign of objects.
  */
@@ -18,7 +22,7 @@ export function assign<T>(target: T, value: DeepPartial<T>) {
   if (Array.isArray(value)) {
     if (Array.isArray(target)) {
       for (const item of value) {
-        target.push(item);
+        (target as Array<string>).push(item);
       }
 
       return target;
@@ -29,7 +33,16 @@ export function assign<T>(target: T, value: DeepPartial<T>) {
 
   if (typeof target === "object" && typeof value === "object") {
     for (const key of Object.keys(value)) {
-      (target as any)[key] = assign((target as any)[key], (value as any)[key]);
+      if (isProtoPath(target, key)) {
+        target = Object.defineProperty(target, key, {
+          value: (value as any)[key]
+        });
+      } else {
+        (target as any)[key] = assign(
+          (target as any)[key],
+          (value as any)[key]
+        );
+      }
     }
 
     return target;
