@@ -63,4 +63,9 @@ describe("assign", () => {
       }
     });
   });
+
+  it("should ignore when unsafe path encountered", () => {
+    const payload = { __proto__: { polluted: "Yes! Its Polluted" } };
+    expect(assign({}, payload)).toStrictEqual({});
+  });
 });
