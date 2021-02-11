@@ -35,7 +35,7 @@ export function assign<T>(target: T, value: DeepPartial<T>) {
     for (const key of Object.keys(value)) {
       if (isProtoPath(target, key)) {
         target = Object.defineProperty(target, key, {
-          value: (value as any)[key]
+          value: (value as any)[key],
         });
       } else {
         (target as any)[key] = assign(

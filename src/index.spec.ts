@@ -34,33 +34,33 @@ describe("assign", () => {
       {
         a: {
           b: {
-            c: true
-          }
-        }
+            c: true,
+          },
+        },
       },
       {
         a: {
           b: {
-            c: "test"
+            c: "test",
           },
-          d: 10
+          d: 10,
         },
         e: {
-          f: false
-        }
+          f: false,
+        },
       }
     );
 
     expect(result).toStrictEqual({
       a: {
         b: {
-          c: "test"
+          c: "test",
         },
-        d: 10
+        d: 10,
       },
       e: {
-        f: false
-      }
+        f: false,
+      },
     });
   });
 
