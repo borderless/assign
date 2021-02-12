@@ -9,9 +9,14 @@ export type DeepPartial<T> = {
     : T[K];
 };
 
-function isProtoPath(path: any, key: string) {
-  return path[key] === Object.prototype;
-}
+/**
+ * Check for assignments to `Object.prototype` which would pollute globals.
+ */
+const hasUnsafeSetter =
+  "__proto__" in Object.prototype
+    ? <K extends PropertyKey>(target: Record<K, unknown>, key: K) =>
+        target[key] === Object.prototype
+    : () => false;
 
 /**
  * Simple recursive assign of objects.
@@ -22,7 +27,7 @@ export function assign<T>(target: T, value: DeepPartial<T>) {
   if (Array.isArray(value)) {
     if (Array.isArray(target)) {
       for (const item of value) {
-        (target as Array<string>).push(item);
+        (target as Array<unknown>).push(item);
       }
 
       return target;
@@ -33,9 +38,12 @@ export function assign<T>(target: T, value: DeepPartial<T>) {
 
   if (typeof target === "object" && typeof value === "object") {
     for (const key of Object.keys(value)) {
-      if (isProtoPath(target, key)) {
-        target = Object.defineProperty(target, key, {
+      if (hasUnsafeSetter(target as Record<PropertyKey, unknown>, key)) {
+        Object.defineProperty(target, key, {
           value: (value as any)[key],
+          enumerable: true,
+          configurable: true,
+          writable: true,
         });
       } else {
         (target as any)[key] = assign(
