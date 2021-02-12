@@ -14,8 +14,7 @@ export type DeepPartial<T> = {
  */
 const hasUnsafeSetter =
   "__proto__" in Object.prototype
-    ? <K extends PropertyKey>(target: Record<K, unknown>, key: K) =>
-        target[key] === Object.prototype
+    ? <K extends PropertyKey>(target: Record<K, unknown>, key: K) => key === "__proto__" && target[key] === Object.prototype
     : () => false;
 
 /**
