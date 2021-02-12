@@ -18,7 +18,8 @@
     "build": "rimraf dist/ dist.es2015/ && tsc && tsc -P tsconfig.es2015.json",
     "specs": "jest --coverage",
     "test": "npm run -s lint && npm run -s build && npm run -s specs",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "bench": "ts-node benchmark/index.ts"
   },
   "repository": {
     "type": "git",
@@ -87,6 +88,7 @@
     "rimraf": "^3.0.0",
     "ts-expect": "^1.1.0",
     "ts-jest": "^26.5.1",
+    "ts-node": "^9.1.1",
     "typescript": "^4.1.5"
   }
 }
