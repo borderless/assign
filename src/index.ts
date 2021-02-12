@@ -10,6 +10,14 @@ export type DeepPartial<T> = {
 };
 
 /**
+ * Check if `value` is a simple object.
+ */
+const isObject = (value: unknown): value is Record<PropertyKey, unknown> => {
+  const proto = Object.getPrototypeOf(value);
+  return proto === null || proto === Object.prototype;
+};
+
+/**
  * Check for assignments to `Object.prototype` which would pollute globals.
  *
  * Node.js 13+ has a `--disable-proto=delete` method, which means we can skip
@@ -17,15 +25,14 @@ export type DeepPartial<T> = {
  */
 const hasUnsafeSetter =
   "__proto__" in Object.prototype
-    ? <K extends PropertyKey>(target: Record<K, unknown>, key: K) => key === "__proto__" && target[key] === Object.prototype
+    ? <K extends PropertyKey>(target: Record<K, unknown>, key: K) =>
+        key === "__proto__" && target[key] === Object.prototype
     : () => false;
 
 /**
  * Simple recursive assign of objects.
  */
 export function assign<T>(target: T, value: DeepPartial<T>) {
-  if (target == null) return value;
-
   if (Array.isArray(value)) {
     if (Array.isArray(target)) {
       for (const item of value) {
@@ -36,28 +43,28 @@ export function assign<T>(target: T, value: DeepPartial<T>) {
     }
 
     return value;
-  }
-
-  if (typeof target === "object" && typeof value === "object") {
-    for (const key of Object.keys(value)) {
-      if (Object.prototype.hasOwnProperty.call(target, key)) {
-        (target as any)[key] = assign(
-          (target as any)[key],
-          (value as any)[key]
-        );
-      } else if (hasUnsafeSetter(target as Record<PropertyKey, unknown>, key)) {
-        Object.defineProperty(target, key, {
-          value: (value as any)[key],
-          enumerable: true,
-          configurable: true,
-          writable: true,
-        });
-      } else {
-        (target as any)[key] = (value as any)[key];
+  } else if (isObject(value)) {
+    if (isObject(target)) {
+      for (const key of Object.keys(value)) {
+        if (Object.prototype.hasOwnProperty.call(target, key)) {
+          (target as any)[key] = assign(
+            (target as any)[key],
+            (value as any)[key]
+          );
+        } else if (hasUnsafeSetter(target, key)) {
+          Object.defineProperty(target, key, {
+            value: (value as any)[key],
+            enumerable: true,
+            configurable: true,
+            writable: true,
+          });
+        } else {
+          (target as any)[key] = (value as any)[key];
+        }
       }
-    }
 
-    return target;
+      return target;
+    }
   }
 
   return value;

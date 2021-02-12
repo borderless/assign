@@ -44,6 +44,20 @@ describe("assign", () => {
     });
   });
 
+  it("should merge to null object prototype", () => {
+    const result = assign(Object.create(null), { prop: true });
+    expect(Object.getPrototypeOf(result)).toBe(null);
+    expect(JSON.stringify(result)).toStrictEqual('{"prop":true}');
+  });
+
+  it("should overwrite using custom classes", () => {
+    class Test {
+      prop = true;
+    }
+    const result = assign({}, new Test());
+    expect(Object.getPrototypeOf(result)).toBe(Test.prototype);
+  });
+
   describe("prototype pollution", () => {
     const badPayload = JSON.parse('{"__proto__":{"polluted":1}}');
 
