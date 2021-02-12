@@ -11,6 +11,9 @@ export type DeepPartial<T> = {
 
 /**
  * Check for assignments to `Object.prototype` which would pollute globals.
+ *
+ * Node.js 13+ has a `--disable-proto=delete` method, which means we can skip
+ * this check in the right environment.
  */
 const hasUnsafeSetter =
   "__proto__" in Object.prototype
@@ -37,7 +40,12 @@ export function assign<T>(target: T, value: DeepPartial<T>) {
 
   if (typeof target === "object" && typeof value === "object") {
     for (const key of Object.keys(value)) {
-      if (hasUnsafeSetter(target as Record<PropertyKey, unknown>, key)) {
+      if (Object.prototype.hasOwnProperty.call(target, key)) {
+        (target as any)[key] = assign(
+          (target as any)[key],
+          (value as any)[key]
+        );
+      } else if (hasUnsafeSetter(target as Record<PropertyKey, unknown>, key)) {
         Object.defineProperty(target, key, {
           value: (value as any)[key],
           enumerable: true,
@@ -45,10 +53,7 @@ export function assign<T>(target: T, value: DeepPartial<T>) {
           writable: true,
         });
       } else {
-        (target as any)[key] = assign(
-          (target as any)[key],
-          (value as any)[key]
-        );
+        (target as any)[key] = (value as any)[key];
       }
     }
 
