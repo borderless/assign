@@ -10,6 +10,11 @@ export type DeepPartial<T> = {
 };
 
 /**
+ * Make `Object.prototype.hasOwnProperty` a reusable utility function.
+ */
+const hasOwnProperty = Function.call.bind(Object.prototype.hasOwnProperty);
+
+/**
  * Check if `value` is a simple object.
  */
 const isObject = (value: unknown): value is Record<PropertyKey, unknown> => {
@@ -46,7 +51,7 @@ export function assign<T>(target: T, value: DeepPartial<T>) {
   } else if (isObject(value)) {
     if (isObject(target)) {
       for (const key of Object.keys(value)) {
-        if (Object.prototype.hasOwnProperty.call(target, key)) {
+        if (hasOwnProperty(target, key)) {
           (target as any)[key] = assign(
             (target as any)[key],
             (value as any)[key]
