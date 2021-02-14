@@ -2,7 +2,7 @@
  * Deep partial mimics the behavior of `assign` values.
  */
 export type DeepPartial<T> = {
-  [K in keyof T]?: T[K] extends any[]
+  [K in keyof T]?: T[K] extends unknown[]
     ? T[K]
     : T extends Record<PropertyKey, unknown>
     ? DeepPartial<T[K]>
@@ -37,7 +37,7 @@ const hasUnsafeSetter =
 /**
  * Simple recursive assign of objects.
  */
-export function assign<T>(target: T, value: DeepPartial<T>) {
+export function assign<T>(target: T, value: DeepPartial<T>): DeepPartial<T> {
   if (Array.isArray(value)) {
     if (Array.isArray(target)) {
       for (const item of value) {

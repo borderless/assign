@@ -12,14 +12,22 @@
     "dist.es2015/"
   ],
   "scripts": {
-    "prettier": "prettier --write",
-    "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --quiet --fix",
-    "format": "npm run prettier -- \"{,src/**/}*.{js,jsx,ts,tsx,json,css,md,yml,yaml}\"",
-    "build": "rimraf dist/ dist.es2015/ && tsc && tsc -P tsconfig.es2015.json",
-    "specs": "jest --coverage",
-    "test": "npm run -s lint && npm run -s build && npm run -s specs",
-    "prepare": "npm run build",
+    "lint": "ts-scripts lint",
+    "format": "ts-scripts format",
+    "specs": "ts-scripts specs",
+    "test": "ts-scripts test",
+    "prepare": "ts-scripts install && ts-scripts build",
     "bench": "ts-node benchmark/index.ts"
+  },
+  "ts-scripts": {
+    "project": [
+      "tsconfig.json",
+      "tsconfig.es2015.json"
+    ],
+    "dist": [
+      "dist",
+      "dist.es2015"
+    ]
   },
   "repository": {
     "type": "git",
@@ -43,30 +51,6 @@
     "url": "https://github.com/BorderlessLabs/assign/issues"
   },
   "homepage": "https://github.com/BorderlessLabs/assign",
-  "jest": {
-    "roots": [
-      "<rootDir>/src/"
-    ],
-    "transform": {
-      "\\.tsx?$": "ts-jest"
-    },
-    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(tsx?|jsx?)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json"
-    ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx,json,css,md,yml,yaml}": "npm run prettier"
-  },
   "publishConfig": {
     "access": "public"
   },
@@ -74,20 +58,10 @@
     "node": ">=10"
   },
   "devDependencies": {
+    "@borderless/ts-scripts": "^0.0.5",
     "@types/jest": "^26.0.20",
     "@types/node": "^14.14.26",
-    "@typescript-eslint/eslint-plugin": "^4.15.0",
-    "@typescript-eslint/parser": "^4.15.0",
-    "eslint": "^7.19.0",
-    "eslint-config-prettier": "^7.2.0",
-    "eslint-plugin-prettier": "^3.1.2",
-    "husky": "^5.0.9",
-    "jest": "^26.6.3",
-    "lint-staged": "^10.0.8",
-    "prettier": "^2.2.1",
-    "rimraf": "^3.0.0",
     "ts-expect": "^1.1.0",
-    "ts-jest": "^26.5.1",
     "ts-node": "^9.1.1",
     "typescript": "^4.1.5"
   }
