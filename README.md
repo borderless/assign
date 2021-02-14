@@ -10,13 +10,13 @@
 ## Installation
 
 ```sh
-npm install @borderlesslabs/assign --save
+npm install @borderless/assign --save
 ```
 
 ## Usage
 
 ```js
-import { assign } from "@borderlesslabs/assign";
+import { assign } from "@borderless/assign";
 
 // Merges objects.
 assign({ a: 10 }, { b: 10 }); //=> { a: 10, b: 10 }
@@ -32,11 +32,11 @@ assign({ a: 10, b: [1] }, { a: 20, b: [2, 3] }); //=> { a: 20, b: [1, 2, 3] }
 
 MIT
 
-[npm-image]: https://img.shields.io/npm/v/@borderlesslabs/assign.svg?style=flat
-[npm-url]: https://npmjs.org/package/@borderlesslabs/assign
-[downloads-image]: https://img.shields.io/npm/dm/@borderlesslabs/assign.svg?style=flat
-[downloads-url]: https://npmjs.org/package/@borderlesslabs/assign
-[travis-image]: https://img.shields.io/travis/BorderlessLabs/assign.svg?style=flat
-[travis-url]: https://travis-ci.org/BorderlessLabs/assign
-[coveralls-image]: https://img.shields.io/coveralls/BorderlessLabs/assign.svg?style=flat
-[coveralls-url]: https://coveralls.io/r/BorderlessLabs/assign?branch=master
+[npm-image]: https://img.shields.io/npm/v/@borderless/assign.svg?style=flat
+[npm-url]: https://npmjs.org/package/@borderless/assign
+[downloads-image]: https://img.shields.io/npm/dm/@borderless/assign.svg?style=flat
+[downloads-url]: https://npmjs.org/package/@borderless/assign
+[travis-image]: https://img.shields.io/travis/borderless/assign.svg?style=flat
+[travis-url]: https://travis-ci.org/borderless/assign
+[coveralls-image]: https://img.shields.io/coveralls/borderless/assign.svg?style=flat
+[coveralls-url]: https://coveralls.io/r/borderless/assign?branch=master

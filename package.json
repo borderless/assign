@@ -1,5 +1,5 @@
 {
-  "name": "@borderlesslabs/assign",
+  "name": "@borderless/assign",
   "version": "1.1.0",
   "description": "Tiny, opinionated deep assign implementation",
   "main": "dist/index.js",
@@ -31,7 +31,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/BorderlessLabs/assign.git"
+    "url": "git://github.com/borderless/assign.git"
   },
   "keywords": [
     "assign",
@@ -48,9 +48,9 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/BorderlessLabs/assign/issues"
+    "url": "https://github.com/borderless/assign/issues"
   },
-  "homepage": "https://github.com/BorderlessLabs/assign",
+  "homepage": "https://github.com/borderless/assign",
   "publishConfig": {
     "access": "public"
   },
